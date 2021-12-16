@@ -1,0 +1,13 @@
+[General]
+Name=MvFilesToDir
+BaseDir=C:\Projetos\MvFilesToDir\
+Project=1
+Version=2
+[Classes]
+Count=1
+Class0.Name=TFrmPrincipal
+Class0.ObjectType=Class
+Class0.DerivedFrom=TForm
+Class0.SourceName=Principal
+Class0.LineNo=11
+Class0.Filename=C:\Projetos\MvFilesToDir\Principal.pas
