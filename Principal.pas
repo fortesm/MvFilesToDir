@@ -77,25 +77,29 @@ begin
   Lista := TStringList.Create;
 
   try
-    if Application.MessageBox('Deseja mesmo mover os arquivos para diretórios com seus nomes?',
-       'Warning', MB_YESNO + MB_ICONWARNING + MB_DEFBUTTON2) = IDYES  then begin
+    try
+      if Application.MessageBox('Deseja mesmo mover os arquivos para diretórios com seus nomes?',
+        'Warning', MB_YESNO + MB_ICONWARNING + MB_DEFBUTTON2) = IDYES  then begin
 
-       ProgressBar.Position := 0;
+        ProgressBar.Position := 0;
 
-       for Arquivo in TDirectory.GetFiles(Path) do
-          if not (Arquivo = Path + ExeName) then Lista.Add(Arquivo);
+        for Arquivo in TDirectory.GetFiles(Path) do
+           if not (Arquivo = Path + ExeName) then Lista.Add(Arquivo);
 
-       ProgressBar.Max := Lista.Count;
+        ProgressBar.Max := Lista.Count;
 
-       for i := 0 to Lista.Count - 1  do
-          TDirectory.CreateDirectory(TPath.GetFileNameWithoutExtension(Lista.Strings[i]));
+        for i := 0 to Lista.Count - 1  do
+           TDirectory.CreateDirectory(TPath.GetFileNameWithoutExtension(Lista.Strings[i]));
 
-       for i := 0 to Lista.Count - 1  do begin
-           MoveFile(Pchar(Lista.Strings[i]), Pchar(Path + TPath.GetFileNameWithoutExtension(Lista.Strings[i])+'\'+ TPath.GetFileName(Lista.Strings[i])));
-           ProgressBar.StepIt;
-           Application.ProcessMessages;
-       end;
-    end else Ed.SetFocus;
+        for i := 0 to Lista.Count - 1  do begin
+            MoveFile(Pchar(Lista.Strings[i]), Pchar(Path + TPath.GetFileNameWithoutExtension(Lista.Strings[i])+'\'+ TPath.GetFileName(Lista.Strings[i])));
+            ProgressBar.StepIt;
+            Application.ProcessMessages;
+         end;
+      end else Ed.SetFocus;
+    except
+       On E : EInOutError do ShowMessage('IO error : ' + E.Message);
+    end;
   finally
     ProgressBar.Position := 0;
     FreeAndNil(Lista);
